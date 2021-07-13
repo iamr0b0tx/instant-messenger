@@ -36,7 +36,7 @@ const OtherUserBubble = (props) => {
   const { text, time, otherUser } = props;
   return (
     <Box className={classes.root}>
-      <Avatar alt={otherUser.username} src={otherUser.photoUrl} className={classes.avatar}></Avatar>
+      <Avatar alt={otherUser.username} src={otherUser.photoUrl} className={classes.avatar}/>
       <Box>
         <Typography className={classes.usernameDate}>
           {otherUser.username} {time}
