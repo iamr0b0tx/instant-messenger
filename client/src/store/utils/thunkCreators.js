@@ -95,18 +95,21 @@ const sendMessage = (data, body) => {
 // conversationId will be set to null if its a brand new conversation
 export const postMessage = (body) => (dispatch) => {
   try {
-    const data = saveMessage(body);
+    saveMessage(body).then(data => {
+      if (!body.conversationId) {
+        dispatch(addConversation(body.recipientId, data.message));
+      } else {
+        dispatch(setNewMessage(data.message));
+      }
 
-    if (!body.conversationId) {
-      dispatch(addConversation(body.recipientId, data.message));
-    } else {
-      dispatch(setNewMessage(data.message));
-    }
+      sendMessage(data, body);
+    });
 
-    sendMessage(data, body);
-  } catch (error) {
-    console.error(error);
+  }catch (error) {
+      console.error(error);
   }
+
+
 };
 
 export const searchUsers = (searchTerm) => async (dispatch) => {
