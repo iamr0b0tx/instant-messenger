@@ -73,6 +73,7 @@ export const fetchConversations = () => async (dispatch) => {
   try {
     const { data } = await axios.get("/api/conversations");
     dispatch(gotConversations(data));
+
   } catch (error) {
     console.error(error);
   }
@@ -98,6 +99,7 @@ export const postMessage = (body) => (dispatch) => {
     saveMessage(body).then(data => {
       if (!body.conversationId) {
         dispatch(addConversation(body.recipientId, data.message));
+
       } else {
         dispatch(setNewMessage(data.message));
       }
