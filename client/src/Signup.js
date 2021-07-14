@@ -38,6 +38,15 @@ const useStyles = makeStyles((theme) => ({
   },
   leftSideBar: {
     '& .shade': {
+      '& img':{
+        marginBottom: theme.spacing(5)
+      },
+      '& .shadeText': {
+        color: "white",
+        fontSize: "xx-large",
+        textAlign: "center",
+      },
+
       height:"100%",
       width:"100%",
       opacity: 0.85,
@@ -104,12 +113,14 @@ const Login = (props) => {
             justifyContent="center"
             alignItems="center">
 
+          <Grid container justifyContent="space-around" xs={9}>
             <img
               className={classes.media}
               src={leftSideBarSVG}
               alt={"bubble"}
             />
-            <Typography>Converse with anyone in any language</Typography>
+            <Typography className={"shadeText"}>Converse with anyone in any language</Typography>
+          </Grid>
         </Grid>
       </Grid>
 
