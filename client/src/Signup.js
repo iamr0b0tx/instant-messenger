@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import {
@@ -11,70 +10,14 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import { register } from "./store/utils/thunkCreators";
-import leftSideBarImg from "./assets/leftSideBarImg.png";
 import leftSideBarSVG from "./assets/leftSideBarSVG.svg";
+import formStyles from "./FormStyles";
+import LeftSideBar from "./LeftSideBar";
 
-const useStyles = makeStyles((theme) => ({
-  formHeader: {
-    fontWeight: "bold",
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(10),
-  },
-  createButton: {
-    marginLeft: "25px",
-  },
-  loginButton: {
-    backgroundColor: "white",
-    marginLeft: theme.spacing(2),
-    boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-    border: "none"
-  },
-  topHeader: {
-    padding: "15px 50px"
-  },
-  leftSideBar: {
-    '& .shade': {
-      '& img':{
-        marginBottom: theme.spacing(5)
-      },
-      '& .shadeText': {
-        color: "white",
-        fontSize: "xx-large",
-        textAlign: "center",
-      },
 
-      height:"100%",
-      width:"100%",
-      opacity: 0.85,
-      background: 'linear-gradient(to bottom, #3A8DFF 70%, #86B9FF 100%)',
-    },
-
-    backgroundImage: `url('${leftSideBarImg}')`,
-    backgroundRepeat: "no-repeat",
-    backgroundColor: '#86B9FF',
-  },
-  rightSideBar: {
-    height: "100%"
-  },
-  media: {
-    maxWidth: "100%",
-  },
-  root: {
-    '& .MuiTextField-root': {
-      marginBottom: theme.spacing(5),
-      width: theme.spacing(50),
-    },
-    '& .MuiButton-label': {
-      height: theme.spacing(5),
-      width: theme.spacing(13),
-    },
-
-    height: "100vh",
-  },
-}));
 
 const Login = (props) => {
-  const classes = useStyles();
+  const classes = formStyles();
   const history = useHistory();
   const { user, register } = props;
   const [formErrorMessage, setFormErrorMessage] = useState({});
@@ -100,24 +43,7 @@ const Login = (props) => {
 
   return (
     <Grid container className={classes.root}>
-      <Grid item xs={3} className={classes.leftSideBar}>
-        <Grid
-            className="shade"
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center">
-
-          <Grid container justifyContent="space-around" xs={9}>
-            <img
-              className={classes.media}
-              src={leftSideBarSVG}
-              alt={"bubble"}
-            />
-            <Typography className={"shadeText"}>Converse with anyone in any language</Typography>
-          </Grid>
-        </Grid>
-      </Grid>
+      <LeftSideBar />
 
       <Grid item xs={9} className={classes.rightSideBar}>
         <Grid container
@@ -135,6 +61,7 @@ const Login = (props) => {
             Login
           </Button>
         </Grid>
+
         <Grid>
           <Grid
               container
@@ -200,11 +127,12 @@ const Login = (props) => {
                 </Grid>
 
                 <Grid
-                container
-                direction="row"
-                justifyContent="center"
-                alignItems="center">
-                  <Button type="submit" variant="contained" color="primary" className={classes.createButton}>
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center">
+
+                  <Button type="submit" variant="contained" color="primary" className={classes.formButton}>
                     Create
                   </Button>
                 </Grid>
