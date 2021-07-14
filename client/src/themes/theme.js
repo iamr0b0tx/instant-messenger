@@ -2,12 +2,12 @@ import { createTheme } from "@material-ui/core";
 
 export const theme = createTheme({
   typography: {
-    fontFamily: "Open Sans, sans-serif",
+    fontFamily: "Open Sans Semi-bold, regular",
     fontSize: 14,
     button: {
       textTransform: "none",
       letterSpacing: 0,
-      fontWeight: "bold"
+      fontWeight: "bold",
     }
   },
   overrides: {
