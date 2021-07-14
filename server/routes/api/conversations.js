@@ -66,7 +66,7 @@ router.get("/", async (req, res, next) => {
       convoJSON.otherUser.online = onlineUsers.includes(convoJSON.otherUser.id);
 
       // set properties for notification count and latest message preview
-      convoJSON.latestMessageText = convoJSON.messages.length? convoJSON.messages[0].text: null;
+      convoJSON.latestMessageText = convoJSON.messages[0].text;
       conversations[i] = convoJSON;
 
       // reverse so that it is ordered asc
