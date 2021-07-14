@@ -8,7 +8,7 @@ export const addMessageToStore = (state, payload) => {
       messages: [message],
     };
     newConvo.latestMessageText = message.text;
-    return [...state, newConvo];
+    return [newConvo, ...state];
   }
 
   return state.map((convo) => {
