@@ -61,7 +61,7 @@ const Login = (props) => {
               alignItems="center">
             <form onSubmit={handleLogin}>
               <Grid>
-                <Typography variant="h5" className={classes.formHeader}>Create an account</Typography>
+                <Typography variant="h5" className={classes.formHeader}>Welcome back!</Typography>
 
                 <Grid>
                   <FormControl margin="normal" required>
