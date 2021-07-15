@@ -104,7 +104,7 @@ router.get("/", async (req, res, next) => {
 
       // set properties for notification count and latest message preview
       convoJSON.latestMessageText = convoJSON.messages[0].text;
-      convoJSON.latestMessageNotRead = (convoJSON.messages[0].notRead === true);
+      convoJSON.latestMessageNotRead = convoJSON.messages[0].notRead;
 
       // reverse so that it is ordered asc
       convoJSON.messages.reverse()
