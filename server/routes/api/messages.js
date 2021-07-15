@@ -14,12 +14,16 @@ router.post("/", async (req, res, next) => {
 
     // if we already know conversation id, we can save time and just add it to message and return
     if (conversationId) {
-      const conversationExists = await Conversation.isValid(conversationId, senderId)
-      if(!conversationExists){
+      const conversation = await Conversation.isValid(conversationId, senderId)
+
+      if(!conversation){
         return res.sendStatus(403);
       }
 
       const message = await Message.create({ senderId, text, conversationId });
+
+      // update the coversation lastActiveAt
+      await conversation.setLogs([req.user], {through: {lastActiveAt: new Date()}})
       return res.json({ message, sender });
     }
 
@@ -39,9 +43,6 @@ router.post("/", async (req, res, next) => {
         ]
       } );
 
-      // add sender to conversation logs
-      await conversation.addLog(req.user, {through: {lastActiveAt: Date()}})
-
       if (onlineUsers.includes(sender.id)) {
         sender.online = true;
       }
@@ -51,6 +52,9 @@ router.post("/", async (req, res, next) => {
       text,
       conversationId: conversation.id,
     });
+
+    // add sender to conversation logs to show last active time in conversation
+    await conversation.setLogs([req.user], {through: {lastActiveAt: new Date()}})
     res.json({ message, sender });
 
   } catch (error) {

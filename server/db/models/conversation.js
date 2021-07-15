@@ -22,7 +22,13 @@ Conversation.findConversation = async function (user1Id, user2Id) {
 Conversation.isValid = async function (conversationId, user1Id) {
   // return conversation or null if it doesn't exist
   const conversation = await Conversation.findByPk(conversationId);
-  return (conversation) && ((conversation.user1Id === user1Id) || (conversation.user2Id === user1Id))
+  return (conversation) && ((conversation.user1Id === user1Id) || (conversation.user2Id === user1Id))? conversation : null;
+};
+
+// update conversationLogs Many to Many fields
+Conversation.updateLog = async function (conversation, user, date) {
+  await conversation.removeLog(user)
+  await conversation.addLog(user, {through: {lastActiveAt: date}})
 };
 
 module.exports = Conversation;

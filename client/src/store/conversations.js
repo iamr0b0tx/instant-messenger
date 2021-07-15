@@ -4,11 +4,13 @@ import {
   addSearchedUsersToStore,
   removeOfflineUserFromStore,
   addMessageToStore,
+  resetUnreadMessagesInStore,
 } from "./utils/reducerFunctions";
 
 // ACTIONS
 
 const GET_CONVERSATIONS = "GET_CONVERSATIONS";
+const RESET_UNREAD_MESSAGES = "RESET_UNREAD_MESSAGES"
 const SET_MESSAGE = "SET_MESSAGE";
 const ADD_ONLINE_USER = "ADD_ONLINE_USER";
 const REMOVE_OFFLINE_USER = "REMOVE_OFFLINE_USER";
@@ -67,12 +69,22 @@ export const addConversation = (recipientId, newMessage) => {
   };
 };
 
+// add new conversation when sending a new message
+export const resetUnreadMessages = (conversationId) => {
+  return {
+    type: RESET_UNREAD_MESSAGES,
+    payload: { conversationId }
+  };
+};
+
 // REDUCER
 
 const reducer = (state = [], action) => {
   switch (action.type) {
     case GET_CONVERSATIONS:
       return action.conversations;
+    case RESET_UNREAD_MESSAGES:
+      return resetUnreadMessagesInStore(state, action.payload);
     case SET_MESSAGE:
       return addMessageToStore(state, action.payload);
     case ADD_ONLINE_USER: {

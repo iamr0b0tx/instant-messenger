@@ -26,11 +26,13 @@ router.get("/", async (req, res, next) => {
           {
           model: User,
           as: "logs",
-          // where: {
-          //   id: userId
-          // },
           attributes: ['id'],
-          through: {attributes: ["lastActiveAt"]},
+          through: {
+            where: {
+                userId: userId,
+              },
+            attributes: ["lastActiveAt"]
+          },
         },
         { model: Message, order: ["createdAt", "DESC"] },
         {
@@ -61,8 +63,20 @@ router.get("/", async (req, res, next) => {
     for (let i = 0; i < conversations.length; i++) {
       const convo = conversations[i];
       const convoJSON = convo.toJSON();
-      const lastActiveAt = convo.logs.length? convo.logs[0].conversationLog.lastActiveAt.getTime() : null;
-      console.log(`convo ${i} -> ${convo.logs.length} -> ${lastActiveAt}`)
+      const lastActiveAt = convo.logs.length? convo.logs[0].conversationLog.lastActiveAt : null;
+
+      // to know source of convo and track user logged in in frontend redux
+      convoJSON.userId = req.user.id;
+
+      // count the unread messages
+      convoJSON.notReadCount = await Message.count({
+        where: {
+          conversationId: convo.id,
+          createdAt: {
+            [Op.gt]: lastActiveAt
+          }
+        }
+      });
 
       // set a property "otherUser" so that frontend will have easier access
       if (convoJSON.user1) {
@@ -77,13 +91,14 @@ router.get("/", async (req, res, next) => {
       // set property for online status of the other user
       convoJSON.otherUser.online = onlineUsers.includes(convoJSON.otherUser.id);
 
-
       // mark the message that have not been read
-      for(let message of convoJSON.messages){
-        if(message.createdAt.getTime() > lastActiveAt){
-          message.notRead = true;
-        }else{
-          break
+      if(lastActiveAt){
+        for(let message of convoJSON.messages){
+          if(message.createdAt.getTime() > lastActiveAt.getTime()){
+            message.notRead = true;
+          }else{
+            break
+          }
         }
       }
 
@@ -104,8 +119,33 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.put("/", async (req, res, next) => {
-  // const message = await Conversation.create({ userId, text, conversationId });
+router.patch("/", async (req, res, next) => {
+  if (!req.user) {
+      return res.sendStatus(401);
+    }
+
+  const senderId = req.user.id;
+  const { recipientId } = req.body;
+
+  let conversation = await Conversation.findConversation(
+      senderId,
+      recipientId
+    );
+
+  if(!conversation){
+    res.sendStatus(404)
+  }
+
+  // add sender to conversation logs
+  try{
+    const conversationLog = await conversation.setLogs([req.user], {through: {lastActiveAt: new Date()}})
+    res.json({conversationId: conversation.id});
+
+  }catch (e){
+    console.error(e)
+
+  }
+
 })
 
 module.exports = router;

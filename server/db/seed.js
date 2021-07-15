@@ -38,11 +38,16 @@ async function seed() {
     senderId: thomas.id,
     text: "I'm from New York",
   });
+  // await santaigoConvo.addLogs([thomas], {through: {lastActiveAt: new Date()}})
+  await Conversation.updateLog(santaigoConvo, thomas, new Date())
+
   await Message.create({
     conversationId: santaigoConvo.id,
     senderId: santiago.id,
     text: "Share photo of your city, please",
   });
+  // await santaigoConvo.addLogs([santiago], {through: {lastActiveAt: new Date()}})
+  await Conversation.updateLog(santaigoConvo, santiago, new Date())
 
   const chiumbo = await User.create({
     username: "chiumbo",
@@ -51,15 +56,21 @@ async function seed() {
     photoUrl:
       "https://res.cloudinary.com/dmlvthmqr/image/upload/v1607914468/messenger/8bc2e13b8ab74765fd57f0880f318eed1c3fb001_fownwt.png",
   });
+
   const chiumboConvo = await Conversation.create({
     user1Id: chiumbo.id,
     user2Id: thomas.id,
   });
+  // await chiumboConvo.addLogs([thomas], {through: {lastActiveAt: new Date()}})
+  await Conversation.updateLog(chiumboConvo, thomas, new Date())
+
   await Message.create({
     conversationId: chiumboConvo.id,
     senderId: chiumbo.id,
     text: "Sure! What time?",
   });
+  // await chiumboConvo.addLogs([chiumbo], {through: {lastActiveAt: new Date()}})
+  await Conversation.updateLog(chiumboConvo, chiumbo, new Date())
 
   const hualing = await User.create({
     username: "hualing",
@@ -68,10 +79,13 @@ async function seed() {
     photoUrl:
       "https://res.cloudinary.com/dmlvthmqr/image/upload/v1607914466/messenger/6c4faa7d65bc24221c3d369a8889928158daede4_vk5tyg.png",
   });
+
   const hualingConvo = await Conversation.create({
     user2Id: hualing.id,
     user1Id: thomas.id,
   });
+  // await hualingConvo.addLogs([thomas], {through: {lastActiveAt: new Date()}})
+  await Conversation.updateLog(hualingConvo, thomas, new Date())
 
   for (let i = 0; i < 11; i++) {
     await Message.create({
@@ -86,6 +100,8 @@ async function seed() {
     senderId: hualing.id,
     text: "😂 😂 😂",
   });
+  // await hualingConvo.addLogs([hualing], {through: {lastActiveAt: new Date()}})
+  await Conversation.updateLog(hualingConvo, hualing, new Date())
 
   const otherUsers = await Promise.all([
     ,
