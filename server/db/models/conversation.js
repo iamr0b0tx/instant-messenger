@@ -22,7 +22,8 @@ Conversation.findConversation = async function (user1Id, user2Id) {
 Conversation.isValid = async function (conversationId, user1Id) {
   // return conversation or null if it doesn't exist
   const conversation = await Conversation.findByPk(conversationId);
-  return (conversation) && ((conversation.user1Id === user1Id) || (conversation.user2Id === user1Id))? conversation : null;
+   if (conversation?.user1Id !== user1Id && conversation?.user2Id !== user1Id) return;
+   return conversation;
 };
 
 // update conversationLogs Many to Many fields
