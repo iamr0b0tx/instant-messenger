@@ -62,7 +62,7 @@ const ChatContent = (props) => {
         </Typography>
       </Box>
       <Box>
-        <StyledBadge badgeContent={notReadCount? (<Box>{notReadCount}</Box>) : null} color="primary" />
+        <StyledBadge badgeContent={notReadCount && (<Box>{notReadCount}</Box>)} color="primary" />
       </Box>
     </Box>
   );
