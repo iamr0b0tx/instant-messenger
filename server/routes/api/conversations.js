@@ -68,7 +68,7 @@ router.get("/", async (req, res, next) => {
         convoJSON.otherUser.online = false;
       }
 
-      // set properties for notification count and latest message preview
+      // set properties for notification count and latout est message preview
       convoJSON.latestMessageText = convoJSON.messages[0].text;
       conversations[i] = convoJSON;
     }
