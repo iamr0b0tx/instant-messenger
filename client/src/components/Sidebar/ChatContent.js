@@ -8,8 +8,7 @@ const StyledBadge = withStyles((theme) => ({
     right: theme.spacing(3),
     top: theme.spacing(3),
     border: `2px solid ${theme.palette.background.paper}`,
-    padding: '0 4px',
-    // display: "flex",
+    padding: `${theme.spacing(0)} ${theme.spacing(5)}`,
   },
 }))(Badge);
 
