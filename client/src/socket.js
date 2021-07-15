@@ -7,6 +7,12 @@ import {
 } from "./store/conversations";
 
 const socket = io(window.location.origin);
+// const socket = io(window.location.origin, {
+//   cors: {
+//     origin: "http://localhost:3001",
+//     // methods: ["GET", "POST"]
+//   }
+// });
 
 socket.on("connect", () => {
   console.log("connected to server");
