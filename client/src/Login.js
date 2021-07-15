@@ -3,7 +3,6 @@ import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   Grid,
-  Box,
   Typography,
   Button,
   FormControl,
@@ -11,7 +10,6 @@ import {
 } from "@material-ui/core";
 import { login } from "./store/utils/thunkCreators";
 import formStyles from "./FormStyles";
-import leftSideBarSVG from "./assets/leftSideBarSVG.svg";
 import LeftSideBar from "./LeftSideBar";
 
 

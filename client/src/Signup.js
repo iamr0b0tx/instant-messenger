@@ -10,7 +10,6 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import { register } from "./store/utils/thunkCreators";
-import leftSideBarSVG from "./assets/leftSideBarSVG.svg";
 import formStyles from "./FormStyles";
 import LeftSideBar from "./LeftSideBar";
 

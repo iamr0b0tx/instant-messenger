@@ -1,6 +1,6 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-const app = require("../app.js");
+const { app } = require("../app.js");
 
 chai.should();
 chai.use(chaiHttp);
@@ -12,10 +12,10 @@ describe("/POST ping", () => {
       .post(`/ping/`)
       .send({ teamName: "Shums" })
       .end((err, res) => {
-        res.should.have.status(400);
+        res.should.have.status(404);
         res.body.should.have
-          .property("response")
-          .eql("Shums is not part of the team. Modify your .env");
+          .property("error")
+          .eql({ message: 'Not Found' });
         done();
       });
   });
