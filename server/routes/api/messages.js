@@ -34,7 +34,13 @@ router.post("/", async (req, res, next) => {
       conversation = await Conversation.create({
         user1Id: senderId,
         user2Id: recipientId,
-      });
+        logs: [
+          { userId: senderId, updatedAt: new Date() }
+        ]
+      } );
+
+      // add sender to conversation logs
+      await conversation.addLog(req.user, {through: {lastActiveAt: Date()}})
 
       if (onlineUsers.includes(sender.id)) {
         sender.online = true;

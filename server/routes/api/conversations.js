@@ -21,7 +21,17 @@ router.get("/", async (req, res, next) => {
       },
       attributes: ["id"],
       order: [[Message, "createdAt", "DESC"]],
+      // add this to find logs for the conversations to know the last Active time
       include: [
+          {
+          model: User,
+          as: "logs",
+          // where: {
+          //   id: userId
+          // },
+          attributes: ['id'],
+          through: {attributes: ["lastActiveAt"]},
+        },
         { model: Message, order: ["createdAt", "DESC"] },
         {
           model: User,
@@ -51,6 +61,8 @@ router.get("/", async (req, res, next) => {
     for (let i = 0; i < conversations.length; i++) {
       const convo = conversations[i];
       const convoJSON = convo.toJSON();
+      const lastActiveAt = convo.logs.length? convo.logs[0].conversationLog.lastActiveAt.getTime() : null;
+      console.log(`convo ${i} -> ${convo.logs.length} -> ${lastActiveAt}`)
 
       // set a property "otherUser" so that frontend will have easier access
       if (convoJSON.user1) {
@@ -65,12 +77,25 @@ router.get("/", async (req, res, next) => {
       // set property for online status of the other user
       convoJSON.otherUser.online = onlineUsers.includes(convoJSON.otherUser.id);
 
+
+      // mark the message that have not been read
+      for(let message of convoJSON.messages){
+        if(message.createdAt.getTime() > lastActiveAt){
+          message.notRead = true;
+        }else{
+          break
+        }
+      }
+
       // set properties for notification count and latest message preview
       convoJSON.latestMessageText = convoJSON.messages[0].text;
-      conversations[i] = convoJSON;
+      convoJSON.latestMessageNotRead = (convoJSON.messages[0].notRead === true);
 
       // reverse so that it is ordered asc
       convoJSON.messages.reverse()
+
+      // save for response
+      conversations[i] = convoJSON;
     }
 
     res.json(conversations);
@@ -78,5 +103,9 @@ router.get("/", async (req, res, next) => {
     next(error);
   }
 });
+
+router.put("/", async (req, res, next) => {
+  // const message = await Conversation.create({ userId, text, conversationId });
+})
 
 module.exports = router;

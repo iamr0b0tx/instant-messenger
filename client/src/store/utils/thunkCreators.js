@@ -1,16 +1,10 @@
 import axios from "axios";
 import socket from "../../socket";
-import {
-  gotConversations,
-  addConversation,
-  setNewMessage,
-  setSearchedUsers,
-} from "../conversations";
-import { gotUser, setFetchingStatus } from "../user";
+import {addConversation, gotConversations, setNewMessage, setSearchedUsers,} from "../conversations";
+import {gotUser, setFetchingStatus} from "../user";
 
 axios.interceptors.request.use(async function (config) {
-  const token = await localStorage.getItem("messenger-token");
-  config.headers["x-access-token"] = token;
+  config.headers["x-access-token"] = await localStorage.getItem("messenger-token");
 
   return config;
 });
