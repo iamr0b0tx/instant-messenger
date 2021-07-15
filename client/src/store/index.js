@@ -19,6 +19,7 @@ const appReducer = combineReducers({
   conversations,
   activeConversation
 });
+
 const rootReducer = (state, action) => {
   if (action.type === CLEAR_ON_LOGOUT) {
     // set state to initial state
