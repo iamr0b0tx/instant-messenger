@@ -63,7 +63,7 @@ router.get("/", async (req, res, next) => {
     for (let i = 0; i < conversations.length; i++) {
       const convo = conversations[i];
       const convoJSON = convo.toJSON();
-      const lastActiveAt = convo.logs.length? convo.logs[0].conversationLog.lastActiveAt : null;
+      const lastActiveAt = convo.logs[0]?.conversationLog.lastActiveAt;
 
       // to know source of convo and track user logged in in frontend redux
       convoJSON.userId = req.user.id;
