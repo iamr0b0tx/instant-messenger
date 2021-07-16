@@ -26,10 +26,4 @@ Conversation.isValid = async function (conversationId, user1Id) {
    return conversation;
 };
 
-// update conversationLogs Many to Many fields
-Conversation.updateLog = async function (conversation, user, date) {
-  await conversation.removeLog(user)
-  await conversation.addLog(user, {through: {lastActiveAt: date}})
-};
-
 module.exports = Conversation;

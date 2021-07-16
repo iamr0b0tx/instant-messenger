@@ -111,12 +111,3 @@ export const searchUsers = (searchTerm) => async (dispatch) => {
     console.error(error);
   }
 };
-
-export const activateConversation = (body) => async (dispatch) => {
-  try {
-    const { data } = await axios.patch("/api/conversations", body);
-    if(data.conversationId) dispatch(resetUnreadMessages(data.conversationId));
-  } catch (error) {
-    console.error(error);
-  }
-};

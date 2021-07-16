@@ -28,6 +28,11 @@ const useStyles = makeStyles((theme) => ({
     color: "#9CADC8",
     letterSpacing: -0.17,
   },
+  previewTextActive: {
+    fontSize: 13,
+    fontWeight: "bolder",
+    letterSpacing: -0.17,
+  },
   notification: {
     height: 20,
     width: 20,
@@ -56,7 +61,7 @@ const ChatContent = (props) => {
         <Typography className={classes.username}>
           {otherUser.username}
         </Typography>
-        <Typography className={classes.previewText}>
+        <Typography className={notReadCount? classes.previewTextActive : classes.previewText}>
           {latestMessageText}
         </Typography>
       </Box>

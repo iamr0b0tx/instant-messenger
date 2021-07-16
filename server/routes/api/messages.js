@@ -21,9 +21,6 @@ router.post("/", async (req, res, next) => {
       }
 
       const message = await Message.create({ senderId, text, conversationId });
-
-      // update the coversation lastActiveAt
-      await conversation.setLogs([req.user], {through: {lastActiveAt: new Date()}})
       return res.json({ message, sender });
     }
 
@@ -37,10 +34,7 @@ router.post("/", async (req, res, next) => {
       // create conversation
       conversation = await Conversation.create({
         user1Id: senderId,
-        user2Id: recipientId,
-        logs: [
-          { userId: senderId, updatedAt: new Date() }
-        ]
+        user2Id: recipientId
       } );
 
       if (onlineUsers.includes(sender.id)) {
@@ -53,8 +47,6 @@ router.post("/", async (req, res, next) => {
       conversationId: conversation.id,
     });
 
-    // add sender to conversation logs to show last active time in conversation
-    await conversation.setLogs([req.user], {through: {lastActiveAt: new Date()}})
     res.json({ message, sender });
 
   } catch (error) {

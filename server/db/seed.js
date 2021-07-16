@@ -32,20 +32,20 @@ async function seed() {
     conversationId: santaigoConvo.id,
     senderId: santiago.id,
     text: "Where are you from?",
+    read: true,
   });
   await Message.create({
     conversationId: santaigoConvo.id,
     senderId: thomas.id,
     text: "I'm from New York",
+    read: true,
   });
-  await Conversation.updateLog(santaigoConvo, thomas, new Date())
 
   await Message.create({
     conversationId: santaigoConvo.id,
     senderId: santiago.id,
     text: "Share photo of your city, please",
   });
-  await Conversation.updateLog(santaigoConvo, santiago, new Date())
 
   const chiumbo = await User.create({
     username: "chiumbo",
@@ -59,14 +59,12 @@ async function seed() {
     user1Id: chiumbo.id,
     user2Id: thomas.id,
   });
-  await Conversation.updateLog(chiumboConvo, thomas, new Date())
 
   await Message.create({
     conversationId: chiumboConvo.id,
     senderId: chiumbo.id,
     text: "Sure! What time?",
   });
-  await Conversation.updateLog(chiumboConvo, chiumbo, new Date())
 
   const hualing = await User.create({
     username: "hualing",
@@ -79,8 +77,8 @@ async function seed() {
   const hualingConvo = await Conversation.create({
     user2Id: hualing.id,
     user1Id: thomas.id,
+    read: true,
   });
-  await Conversation.updateLog(hualingConvo, thomas, new Date())
 
   for (let i = 0; i < 11; i++) {
     await Message.create({
@@ -95,7 +93,6 @@ async function seed() {
     senderId: hualing.id,
     text: "😂 😂 😂",
   });
-  await Conversation.updateLog(hualingConvo, hualing, new Date())
 
   const otherUsers = await Promise.all([
     ,
