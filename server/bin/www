@@ -36,6 +36,17 @@ const io = require("socket.io")(server, {
   }
 });
 
+io.use((socket, next) => {
+  const username = socket.handshake.auth.username;
+  console.log(username);
+
+  if (!username) {
+    return next(new Error("invalid username"));
+  }
+  socket.username = username;
+  next();
+});
+
 io.on("connection", (socket) => {
   socket.on("go-online", (id) => {
     if (!onlineUsers.includes(id)) {

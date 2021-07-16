@@ -9,8 +9,18 @@ import {
 // const socket = io(window.location.origin);
 const socket = io(window.location.origin);
 
+// function destroyed() {
+//   socket.off("connect_error");
+// }
+
 socket.on("connect", () => {
   console.log("connected to server");
+
+  socket.on("connect_error", (err) => {
+    if (err.message === "invalid username") {
+      this.usernameAlreadySelected = false;
+    }
+  });
 
   socket.on("add-online-user", (id) => {
     store.dispatch(addOnlineUser(id));
