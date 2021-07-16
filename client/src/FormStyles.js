@@ -7,17 +7,15 @@ const formStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(10),
   },
-  formButton: {
-    marginLeft: "25px",
-  },
   loginButton: {
-    backgroundColor: "white",
+    backgroundColor: theme.palette.loginButton,
     marginLeft: theme.spacing(2),
     boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
     border: "none"
   },
   topHeader: {
-    padding: "15px 50px"
+    paddingTop: theme.spacing(3),
+    paddingRight: theme.spacing(5),
   },
   leftSideBar: {
     '& .shade': {
@@ -26,7 +24,7 @@ const formStyles = makeStyles((theme) => ({
       },
       '& .shadeText': {
         color: "white",
-        fontSize: "xx-large",
+        fontSize: theme.typography.auth.fontSize,
         textAlign: "center",
       },
 
