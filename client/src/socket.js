@@ -6,9 +6,7 @@ import {
   addOnlineUser,
 } from "./store/conversations";
 
-// const socket = io(window.location.origin);
 const socket = io(window.location.origin);
-
 const sessionID = localStorage.getItem("sessionID");
 
 if (sessionID) {
@@ -16,10 +14,6 @@ if (sessionID) {
   socket.auth = { sessionID };
   socket.connect();
 }
-
-// function destroyed() {
-//   socket.off("connect_error");
-// }
 
 socket.on("connect", () => {
   console.log("connected to server");
