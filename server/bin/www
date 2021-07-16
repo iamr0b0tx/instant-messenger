@@ -11,7 +11,7 @@ const { app, sessionStore } = require("../app");
 const http = require("http");
 const db = require("../db");
 const onlineUsers = require("../onlineUsers");
-
+const InMemorySessionStore = require('../sessionStore')
 /**
  * Get port from environment and store in Express.
  */
@@ -30,6 +30,7 @@ const server = http.createServer(app);
  */
 
 // const io = require("socket.io")(server);
+const socketSessionStore = new InMemorySessionStore();
 const io = require("socket.io")(server, {
   cors: {
     origin: "http://localhost:3000",
@@ -37,17 +38,35 @@ const io = require("socket.io")(server, {
 });
 
 io.use((socket, next) => {
-  const username = socket.handshake.auth.username;
-  console.log(username);
-
-  if (!username) {
-    return next(new Error("invalid username"));
+  const sessionID = socket.handshake.auth.sessionID;
+  if (sessionID) {
+    // find existing session
+    const session = socketSessionStore.findSession(sessionID);
+    if (session) {
+      socket.sessionID = sessionID;
+      socket.userID = session.userID;
+      return next();
+    }
   }
-  socket.username = username;
+  const userID = socket.handshake.auth.userID;
+  if (!userID) {
+    return next(new Error("invalid userID"));
+  }
+
+  // create new session
+  socket.sessionID = randomId();
+  socket.userID = userID;
   next();
 });
 
 io.on("connection", (socket) => {
+  socket.emit("session", {
+    sessionID: socket.sessionID,
+    userID: socket.userID,
+  });
+
+  socket.join(socket.userID);
+
   socket.on("go-online", (id) => {
     if (!onlineUsers.includes(id)) {
       onlineUsers.push(id);
@@ -63,11 +82,24 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("logout", (id) => {
+  socket.on("logout", async (id) => {
     if (onlineUsers.includes(id)) {
       userIndex = onlineUsers.indexOf(id);
       onlineUsers.splice(userIndex, 1);
       socket.broadcast.emit("remove-offline-user", id);
+    }
+
+    const matchingSockets = await io.in(socket.userID).allSockets();
+    const isDisconnected = matchingSockets.size === 0;
+    if (isDisconnected) {
+      // notify other users
+      socket.broadcast.emit("user disconnected", socket.userID);
+      // update the connection status of the session
+      socketSessionStore.saveSession(socket.sessionID, {
+        userID: socket.userID,
+        username: socket.username,
+        connected: false,
+      });
     }
   });
 });
