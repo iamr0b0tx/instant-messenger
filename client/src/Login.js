@@ -35,7 +35,7 @@ const Login = (props) => {
     <Grid container className={classes.root}>
       <LeftSideBar />
 
-      <Grid item xs={9} className={classes.rightSideBar}>
+      <Grid item xs={8} className={classes.rightSideBar}>
         <Grid container
               direction="row"
               justifyContent="flex-end"

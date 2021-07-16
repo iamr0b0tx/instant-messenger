@@ -12,7 +12,7 @@ const LeftSideBar = (props) => {
   const classes = formStyles();
 
   return (
-      <Grid item xs={3} className={classes.leftSideBar}>
+      <Grid item xs={4} className={classes.leftSideBar}>
         <Grid
             className="shade"
             container
