@@ -19,6 +19,7 @@ Create a .env file in the server directory and add your session secret (this can
 
 ```
 SESSION_SECRET="your session secret"
+CORS_ORIGIN=http://localhost:3000
 DATABASE_URL=postgres://<db_user_name>:<db_user_pass>@localhost:5432/messenger
 TEST_DATABASE_URL=postgres://<db_user_name>:<db_user_pass>@localhost:5432/messenger
 ```
