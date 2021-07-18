@@ -19,7 +19,7 @@ const SnackbarError = (props) => {
     <Snackbar
       open={props.snackBarOpen}
       onClose={() => props.setSnackBarOpen(false)}
-      message={props.errorMessage || "Sorry, an error occured. Please try again"}
+      message={props.errorMessage || "Sorry, an error occurred. Please try again"}
       action={
         <React.Fragment>
           <Button
