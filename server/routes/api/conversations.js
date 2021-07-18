@@ -86,10 +86,40 @@ router.get("/", async (req, res, next) => {
       conversations[i] = convoJSON;
     }
 
-    res.json(conversations);
+    return res.json(conversations);
   } catch (error) {
     next(error);
   }
+});
+
+router.patch("/", async (req, res, next) => {
+  if (!req.user) {
+    return res.sendStatus(401);
+  }
+
+  const senderId = req.user.id;
+  const {conversationId} = req.body;
+
+  let conversation = await Conversation.isValid(conversationId, senderId);
+  if(!conversation){
+    return res.sendStatus(404)
+  }
+
+  await Message.update(
+    { read: true },
+    {
+      where: {
+        conversationId: conversationId,
+        senderId: {
+            [Op.not]: senderId,
+        },
+        read: false
+      }
+    }
+  );
+
+  return res.json({conversationId: conversationId});
+
 });
 
 module.exports = router;

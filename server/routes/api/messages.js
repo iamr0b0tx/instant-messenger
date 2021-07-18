@@ -41,13 +41,14 @@ router.post("/", async (req, res, next) => {
         sender.online = true;
       }
     }
+
     const message = await Message.create({
       senderId,
       text,
       conversationId: conversation.id,
     });
 
-    res.json({ message, sender });
+    return res.json({ message, sender });
 
   } catch (error) {
     next(error);
