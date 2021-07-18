@@ -1,16 +1,10 @@
 import axios from "axios";
 import socket from "../../socket";
-import {
-  gotConversations,
-  addConversation,
-  setNewMessage,
-  setSearchedUsers,
-} from "../conversations";
-import { gotUser, setFetchingStatus } from "../user";
+import {addConversation, gotConversations, markUnreadMessages, setNewMessage, setSearchedUsers} from "../conversations";
+import {gotUser, setFetchingStatus} from "../user";
 
 axios.interceptors.request.use(async function (config) {
-  const token = await localStorage.getItem("messenger-token");
-  config.headers["x-access-token"] = token;
+  config.headers["x-access-token"] = await localStorage.getItem("messenger-token");
 
   return config;
 });
@@ -89,6 +83,15 @@ const sendMessage = (data, body) => {
     recipientId: body.recipientId,
     sender: data.sender,
   });
+};
+
+export const resetUnreadMessages = (body) => async (dispatch) => {
+  try {
+    const { data } = await axios.patch("/api/conversations", body);
+    if (data.conversationId) dispatch(markUnreadMessages(data.conversationId))
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 // message format to send: {recipientId, text, conversationId}
