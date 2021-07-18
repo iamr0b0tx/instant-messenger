@@ -72,7 +72,6 @@ io.use((socket, next) => {
   });
 
   socket.on("new-message", (data) => {
-    // socket.broadcast.emit("new-message", {
     socket.to(socket.userID).emit("new-message", {
       message: data.message,
       sender: data.sender,
