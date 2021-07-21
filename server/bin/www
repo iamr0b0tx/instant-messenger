@@ -64,6 +64,11 @@ io.use((socket, next) => {
   // add user id
   socket.join(socket.userID);
 
+  // socket.emit("session", {
+  //   sessionID: socket.sessionID,
+  //   userID: socket.userID,
+  // });
+
   socket.on("go-online", (id) => {
     onlineUsers.add(id);
 
@@ -72,7 +77,7 @@ io.use((socket, next) => {
   });
 
   socket.on("new-message", (data) => {
-    socket.to(socket.userID).emit("new-message", {
+    socket.broadcast.emit("new-message", {
       message: data.message,
       sender: data.sender,
     });
